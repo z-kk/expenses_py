@@ -73,12 +73,14 @@ def printGraph():
 	yl = []
 	yd = []
 	expi = 0
+	# 月々のデータを取得
 	for row in jdata['log']:
 		when = datetime.datetime.strptime(row['when'], '%Y-%m-%d')
 
 		xl.append(when)
 		yl.append(row['bank'] + row['cash'] - row['card'])
 
+		# 定期出費を計上
 		dum = 0
 		for erow in jdata['exp']:
 			ewhen = datetime.datetime.strptime(erow['when'], '%Y-%m-%d')
@@ -86,7 +88,7 @@ def printGraph():
 			ldate = when.date() - datetime.timedelta(days=when.day - 1)
 
 			if ((ldate > ewhen) and (ldate <= ewhen + monthdelta.monthdelta(erow['month']))):
-				dum += erow['exp'] * (monthdelta.monthmod(ewhen, ldate)[0].months - 1) / erow['month']
+				dum += erow['exp'] * (monthdelta.monthmod(ldate, ewhen + monthdelta.monthdelta(erow['month']))[0].months) / erow['month']
 
 		yd.append(row['bank'] + row['cash'] - row['card'] + dum)
 
