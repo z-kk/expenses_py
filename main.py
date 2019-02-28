@@ -75,6 +75,10 @@ def printGraph():
 	expi = 0
 	# 月々のデータを取得
 	for row in jdata['log']:
+		adj = 0
+		if ('adj' in row):
+			adj = row['adj']
+
 		when = datetime.datetime.strptime(row['when'], '%Y-%m-%d')
 
 		xl.append(when)
@@ -90,7 +94,7 @@ def printGraph():
 			if ((ldate > ewhen) and (ldate <= ewhen + monthdelta.monthdelta(erow['month']))):
 				dum += erow['exp'] * (monthdelta.monthmod(ldate, ewhen + monthdelta.monthdelta(erow['month']))[0].months) / erow['month']
 
-		yd.append(row['bank'] + row['cash'] - row['card'] + dum)
+		yd.append(row['bank'] + row['cash'] - row['card'] + adj + dum)
 
 	xe = []
 	ye = []
@@ -127,6 +131,7 @@ if __name__ == '__main__':
 		jdata['exp'].append(edata)
 
 	# データ書込
+	jdata['exp'].sort(key=lambda x: x['when'])
 	jsonUtils.writeJsonFile(dataFile, jdata)
 
 	# グラフ作成
