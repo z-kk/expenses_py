@@ -7,6 +7,7 @@ import jsonUtils
 
 dataFile = "exp.json"
 fp = FontProperties(fname="C:\Windows\Fonts\msgothic.ttc", size=12)
+fp = FontProperties(fname="/mnt/c/Windows/Fonts/msgothic.ttc", size=12)
 
 def inputLogData():
 	""" 実行時点のデータを取得
@@ -37,6 +38,7 @@ def inputExpData():
 	"""
 
 	expDate = datetime.date.today()
+	expDate = "{}".format(expDate)
 
 	if (input("出費日付は {} ?[Y/n]: ".format(expDate)) == "n"):
 		while 1:
@@ -59,7 +61,7 @@ def inputExpData():
 		if (month.isdigit()):
 			break
 
-	jdata = {"when": expDate, "exp": int(exp), "month": int(month)}
+	jdata = {"when": expDate, "title": title, "exp": int(exp), "month": int(month)}
 	return jdata
 
 def printGraph():
@@ -103,6 +105,7 @@ def printGraph():
 		ye.append(row['exp'])
 
 	plt.switch_backend("agg")
+	plt.subplots(figsize=(16, 9))
 	plt.plot(xl, yd, label="dummy", linestyle="--")
 	plt.plot(xl, yl, label="log")
 	plt.scatter(xe, ye, label="expense", color="red")
