@@ -5,11 +5,11 @@ fName = "hoge.json"
 
 def readJsonFile(fileName):
 	""" JSONファイルからdictionaryを生成
-	params:
-		fileName	JSONファイル名
-	return:
-		dict	JSONデータ
-	"""
+		Params:
+			fileName	JSONファイル名
+		Return:
+			dict	JSONデータ
+		"""
 
 	if (os.path.exists(fileName)):
 		with open(fileName, 'r') as f:
@@ -21,12 +21,12 @@ def readJsonFile(fileName):
 
 def writeJsonFile(fileName, jdata):
 	""" JSONファイルにdictionaryの内容を書き込む
-	params:
-		fileName	JSONファイル名
-		jdata	dictionaryデータ
-	return:
-		int		0:書き込み成功
-	"""
+		Params:
+			fileName	JSONファイル名
+			jdata	dictionaryデータ
+		Return:
+			int		0:書き込み成功
+		"""
 
 	try:
 		with open(fileName, 'w') as f:

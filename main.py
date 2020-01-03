@@ -8,12 +8,13 @@ import jsonUtils
 dataFile = "exp.json"
 fp = FontProperties(fname="C:\Windows\Fonts\msgothic.ttc", size=12)
 fp = FontProperties(fname="/mnt/c/Windows/Fonts/msgothic.ttc", size=12)
+SHOW_YEARS = 5
 
 def inputLogData():
 	""" 実行時点のデータを取得
-	return:
-		jdata	jsonデータ
-	"""
+		Return:
+			jdata	jsonデータ
+		"""
 
 	while 1:
 		bank = input("銀行預金: ")
@@ -33,9 +34,9 @@ def inputLogData():
 
 def inputExpData():
 	""" 出費データを取得
-	return:
-		jdata	jsonデータ
-	"""
+		Return:
+			jdata	jsonデータ
+		"""
 
 	expDate = datetime.date.today()
 	expDate = "{}".format(expDate)
@@ -82,6 +83,8 @@ def printGraph():
 			adj = row['adj']
 
 		when = datetime.datetime.strptime(row['when'], '%Y-%m-%d')
+		if (datetime.date(when.year + SHOW_YEARS, when.month, when.day) < datetime.date.today()):
+			continue
 
 		xl.append(when)
 		yl.append(row['bank'] + row['cash'] - row['card'])
@@ -101,7 +104,10 @@ def printGraph():
 	xe = []
 	ye = []
 	for row in [row for row in jdata['exp'] if row['month'] == 0]:
-		xe.append(datetime.datetime.strptime(row['when'], '%Y-%m-%d'))
+		when = datetime.datetime.strptime(row['when'], '%Y-%m-%d')
+		if (datetime.date(when.year + SHOW_YEARS, when.month, when.day) < datetime.date.today()):
+			continue
+		xe.append(when)
 		ye.append(row['exp'])
 
 	plt.switch_backend("agg")
